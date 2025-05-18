@@ -56,6 +56,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 2rem;
+    gap: 2rem;
 }
 
 .calculator {
@@ -82,6 +83,34 @@ body {
     text-align: right;
     color: var(--text-color);
     font-weight: 500;
+}
+
+.mode-selector {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.mode-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.mode-btn:hover {
+    background: #f8f9fa;
+}
+
+.mode-btn.active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
 }
 
 .buttons {
@@ -141,6 +170,133 @@ body {
     background-color: var(--secondary-color);
 }
 
+.constants-panel {
+    background-color: var(--calculator-bg);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 300px;
+}
+
+.constants-panel h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.constant-btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--button-bg);
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.constant-btn:hover {
+    background-color: var(--button-hover);
+}
+
+/* Matrix Styles */
+.matrix-input {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.matrix-input input {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Table Styles */
+.table-input {
+    grid-column: span 4;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.table-output {
+    margin-top: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.table-output table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-output th,
+.table-output td {
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.table-output th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Equation Styles */
+.equation-input {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.equation-input input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .calculator-container {
+        flex-direction: column;
+    }
+    .calculator, .constants-panel {
+        max-width: 100%;
+    }
+
+    .constants-panel {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .mode-selector {
+        flex-wrap: wrap;
+    }
+
+    .mode-btn {
+        flex: 1;
+        min-width: 100px;
+    }
+}
+
 @media (max-width: 480px) {
     .calculator {
         padding: 1rem;
@@ -155,4 +311,24 @@ body {
         height: 3.5rem;
         font-size: 1.25rem;
     }
+}
+
+/* Graph Output */
+.graph-output {
+    width: 100%;
+    height: 300px;
+    margin-top: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+}
+
+/* Unit Conversion */
+.unit-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: center;
 } 

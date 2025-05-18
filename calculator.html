@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scientific Calculator - TRONICS</title>
+    <title>Advanced Scientific Calculator - TRONICS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="calculator.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
         <a href="index.html" class="back-button">← Back to TRONICS</a>
-        <h1>Scientific Calculator</h1>
+        <h1>Advanced Scientific Calculator</h1>
     </nav>
 
     <div class="calculator-container">
@@ -18,32 +19,136 @@
             <div class="display-container">
                 <input type="text" id="display" class="display" disabled aria-label="Calculator display" placeholder="0">
             </div>
-            <div class="buttons">
-                <button class="btn function" onclick="clearDisplay()">AC</button>
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="switchMode('basic')">Basic</button>
+                <button class="mode-btn" onclick="switchMode('matrix')">Matrix</button>
+                <button class="mode-btn" onclick="switchMode('table')">Table</button>
+                <button class="mode-btn" onclick="switchMode('equation')">Equation</button>
+                <button class="mode-btn" onclick="switchMode('graph')">Graph</button>
+                <button class="mode-btn" onclick="switchMode('unit')">Unit</button>
+            </div>
+
+            <!-- Basic Calculator -->
+            <div id="basic-buttons" class="buttons">
+                <!-- Scientific Functions -->
+                <button class="btn function" onclick="appendToDisplay('sin(')">sin</button>
+                <button class="btn function" onclick="appendToDisplay('cos(')">cos</button>
+                <button class="btn function" onclick="appendToDisplay('tan(')">tan</button>
+                <button class="btn function" onclick="appendToDisplay('asin(')">asin</button>
+                <button class="btn function" onclick="appendToDisplay('acos(')">acos</button>
+                <button class="btn function" onclick="appendToDisplay('atan(')">atan</button>
+                <button class="btn function" onclick="appendToDisplay('log(')">log</button>
+                <button class="btn function" onclick="appendToDisplay('ln(')">ln</button>
+                <button class="btn function" onclick="appendToDisplay('sqrt(')">√</button>
+                <button class="btn function" onclick="appendToDisplay('pi')">π</button>
+                <button class="btn function" onclick="appendToDisplay('e')">e</button>
                 <button class="btn function" onclick="appendToDisplay('(')">(</button>
                 <button class="btn function" onclick="appendToDisplay(')')">)</button>
-                <button class="btn operator" onclick="appendToDisplay('/')">÷</button>
+                <button class="btn function" onclick="appendToDisplay('/')">÷</button>
 
+                <!-- Advanced Functions -->
+                <button class="btn function" onclick="appendToDisplay('sinh(')">sinh</button>
+                <button class="btn function" onclick="appendToDisplay('cosh(')">cosh</button>
+                <button class="btn function" onclick="appendToDisplay('tanh(')">tanh</button>
+                <button class="btn function" onclick="appendToDisplay('abs(')">|x|</button>
+                <button class="btn function" onclick="appendToDisplay('exp(')">e^x</button>
+                <button class="btn function" onclick="appendToDisplay('^')">x^y</button>
+                <button class="btn function" onclick="appendToDisplay('!')">x!</button>
+                <button class="btn function" onclick="appendToDisplay('mod')">mod</button>
+
+                <!-- Numbers and Basic Operators -->
                 <button class="btn number" onclick="appendToDisplay('7')">7</button>
                 <button class="btn number" onclick="appendToDisplay('8')">8</button>
                 <button class="btn number" onclick="appendToDisplay('9')">9</button>
                 <button class="btn operator" onclick="appendToDisplay('*')">×</button>
-
                 <button class="btn number" onclick="appendToDisplay('4')">4</button>
                 <button class="btn number" onclick="appendToDisplay('5')">5</button>
                 <button class="btn number" onclick="appendToDisplay('6')">6</button>
                 <button class="btn operator" onclick="appendToDisplay('-')">−</button>
-
                 <button class="btn number" onclick="appendToDisplay('1')">1</button>
                 <button class="btn number" onclick="appendToDisplay('2')">2</button>
                 <button class="btn number" onclick="appendToDisplay('3')">3</button>
                 <button class="btn operator" onclick="appendToDisplay('+')">+</button>
-
                 <button class="btn number" onclick="appendToDisplay('0')">0</button>
                 <button class="btn number" onclick="appendToDisplay('.')">.</button>
                 <button class="btn function" onclick="backspace()">⌫</button>
                 <button class="btn equals" onclick="calculate()">=</button>
             </div>
+
+            <!-- Matrix Operations -->
+            <div id="matrix-buttons" class="buttons" style="display: none;">
+                <button class="btn function" onclick="createMatrix()">New Matrix</button>
+                <button class="btn function" onclick="matrixOperation('add')">Add</button>
+                <button class="btn function" onclick="matrixOperation('subtract')">Subtract</button>
+                <button class="btn function" onclick="matrixOperation('multiply')">Multiply</button>
+                <button class="btn function" onclick="matrixOperation('determinant')">Det</button>
+                <button class="btn function" onclick="matrixOperation('inverse')">Inverse</button>
+                <button class="btn function" onclick="matrixOperation('transpose')">Transpose</button>
+                <button class="btn function" onclick="matrixOperation('rank')">Rank</button>
+                <button class="btn function" onclick="matrixOperation('eigenvalues')">Eigenvalues</button>
+                <button class="btn function" onclick="matrixOperation('eigenvectors')">Eigenvectors</button>
+                <div id="matrix-input" class="matrix-input"></div>
+            </div>
+
+            <!-- Table Generation -->
+            <div id="table-buttons" class="buttons" style="display: none;">
+                <input type="text" id="function-input" placeholder="Enter function (e.g., x^2)" class="table-input">
+                <input type="number" id="start-value" placeholder="Start" class="table-input">
+                <input type="number" id="end-value" placeholder="End" class="table-input">
+                <input type="number" id="step-value" placeholder="Step" class="table-input">
+                <button class="btn equals" onclick="generateTable()">Generate Table</button>
+                <div id="table-output" class="table-output"></div>
+            </div>
+
+            <!-- Equation Solving -->
+            <div id="equation-buttons" class="buttons" style="display: none;">
+                <button class="btn function" onclick="solveEquation('linear')">Linear</button>
+                <button class="btn function" onclick="solveEquation('quadratic')">Quadratic</button>
+                <button class="btn function" onclick="solveEquation('cubic')">Cubic</button>
+                <button class="btn function" onclick="solveEquation('polynomial')">Polynomial</button>
+                <button class="btn function" onclick="solveEquation('system')">System</button>
+                <div id="equation-input" class="equation-input"></div>
+            </div>
+
+            <!-- Graphing -->
+            <div id="graph-buttons" class="buttons" style="display: none;">
+                <input type="text" id="graph-function" placeholder="Enter function (e.g., x^2)" class="table-input">
+                <input type="number" id="graph-x-min" placeholder="X min" class="table-input">
+                <input type="number" id="graph-x-max" placeholder="X max" class="table-input">
+                <button class="btn equals" onclick="plotFunction()">Plot</button>
+                <div id="graph-output" class="graph-output"></div>
+            </div>
+
+            <!-- Unit Conversion -->
+            <div id="unit-buttons" class="buttons" style="display: none;">
+                <select id="unit-type" class="table-input">
+                    <option value="length">Length</option>
+                    <option value="mass">Mass</option>
+                    <option value="temperature">Temperature</option>
+                    <option value="time">Time</option>
+                    <option value="energy">Energy</option>
+                    <option value="power">Power</option>
+                </select>
+                <input type="number" id="unit-value" placeholder="Value" class="table-input">
+                <select id="unit-from" class="table-input"></select>
+                <select id="unit-to" class="table-input"></select>
+                <button class="btn equals" onclick="convertUnit()">Convert</button>
+                <div id="unit-result" class="unit-result"></div>
+            </div>
+        </div>
+
+        <div class="constants-panel">
+            <h3>Scientific Constants</h3>
+            <button class="constant-btn" onclick="appendToDisplay('pi')">π</button>
+            <button class="constant-btn" onclick="appendToDisplay('e')">e</button>
+            <button class="constant-btn" onclick="appendToDisplay('6.626e-34')">h (Planck)</button>
+            <button class="constant-btn" onclick="appendToDisplay('3e8')">c (Speed of Light)</button>
+            <button class="constant-btn" onclick="appendToDisplay('9.81')">g (Gravity)</button>
+            <button class="constant-btn" onclick="appendToDisplay('1.602e-19')">e (Electron Charge)</button>
+            <button class="constant-btn" onclick="appendToDisplay('6.022e23')">NA (Avogadro)</button>
+            <button class="constant-btn" onclick="appendToDisplay('8.314')">R (Gas Constant)</button>
+            <button class="constant-btn" onclick="appendToDisplay('1.38e-23')">k (Boltzmann)</button>
+            <button class="constant-btn" onclick="appendToDisplay('9.109e-31')">me (Electron Mass)</button>
         </div>
     </div>
 
